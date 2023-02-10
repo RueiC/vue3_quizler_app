@@ -1,0 +1,30 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": [
+    "src/env.d.tsd.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "types.d.ts",
+    "types.d.ts"
+  ],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ]
+}
