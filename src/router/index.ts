@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import RegistrationForm from '@/views/RegistrationForm.vue';
+import Register from '@/views/Register.vue';
 import Library from '@/views/Library/Library.vue';
 import CreateSet from '@/views/Library/CreateSet.vue';
 import CardDetails from '@/views/Library/CardDetails.vue';
@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: RegistrationForm,
+    component: Register,
   },
   {
     path: '/library',

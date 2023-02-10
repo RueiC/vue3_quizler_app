@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount } from 'vue';
-import type { Ref } from 'vue';
-import type { Commit } from 'vuex';
-import type { User } from '@firebase/auth';
-import type { FlashCard } from '../../../types';
-import { useRouter, useRoute } from 'vue-router';
-import { useStore } from 'vuex';
+import { ref, reactive, onBeforeMount } from "vue";
+import type { Ref } from "vue";
+import type { Commit } from "vuex";
+import type { User } from "@firebase/auth";
+import type { FlashCard } from "../../../types";
+import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
 
-import { QuizCard, FinishTestWindow } from '../../components/index';
+import { QuizCard, FinishedQuizeWindow } from "../../components/index";
 import {
   auth,
   db,
   doc,
   getDoc,
   onAuthStateChanged,
-} from '../../includes/firebase';
+} from "../../includes/firebase";
 
 interface QuizeState {
   score: {
@@ -43,7 +43,7 @@ const cardId: string = route.params.id as string;
 const { commit, getters }: { commit: Commit; getters: any } = useStore();
 
 onBeforeMount(() => {
-  commit('SHOW_SPINNER');
+  commit("SHOW_SPINNER");
   onAuthStateChanged(auth, (user: User | null): void => {
     if (!user) return;
 
@@ -53,7 +53,7 @@ onBeforeMount(() => {
 
 const getFlashcardContent = async (): Promise<void> => {
   try {
-    const docRef = doc(db, 'library', cardId);
+    const docRef = doc(db, "library", cardId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -66,7 +66,7 @@ const getFlashcardContent = async (): Promise<void> => {
     console.log(err);
   }
 
-  commit('HIDE_SPINNER');
+  commit("HIDE_SPINNER");
 };
 
 const createAnswer = (): void => {
@@ -107,7 +107,7 @@ const nextQuestion = (isFinish: boolean): void => {
       answer.value = null;
       quizeState.score.correct = 0;
       quizeState.score.wrong = 0;
-      router.push({ name: 'flash-card', params: { cardId } });
+      router.push({ name: "flash-card", params: { cardId } });
     }, 2000);
   }
 
@@ -187,7 +187,7 @@ const checkAnswer = (optionNum: number) => {
         </div>
       </div>
 
-      <FinishTestWindow v-else :score="quizeState.score" />
+      <FinishedQuizeWindow v-else :score="quizeState.score" />
     </div>
   </main>
 </template>

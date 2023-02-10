@@ -8,7 +8,7 @@ import { auth } from './includes/firebase';
 import { Nav } from './components/index';
 
 const currentUser: Ref<User | null> = ref(null);
-const isReady: Ref<boolean> = ref(false);
+const isPageReady: Ref<boolean> = ref(false);
 const router = useRouter();
 const route = useRoute();
 
@@ -28,7 +28,7 @@ const checkUser = (user: User | null): void => {
     }
   }
 
-  isReady.value = true;
+  isPageReady.value = true;
 };
 
 const checkIsLoggedIn = (user: User | null): void => {
@@ -49,7 +49,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div v-if="isReady">
+  <div v-if="isPageReady">
     <Nav v-if="route.path !== '/'" :currentUser="currentUser" />
     <RouterView />
   </div>

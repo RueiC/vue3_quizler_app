@@ -4,21 +4,21 @@ import type { Ref } from 'vue';
 import type { FlashCard } from '../../types';
 
 interface Props {
-  content: FlashCard;
-  index: number;
+  flashCardContent: FlashCard;
+  contentIndex: number;
   isEdit: boolean;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits(['setItems']);
-const word: Ref<string> = ref(props.content.word);
-const definition: Ref<string> = ref(props.content.definition);
+const word: Ref<string> = ref(props.flashCardContent.word);
+const definition: Ref<string> = ref(props.flashCardContent.definition);
 
 watch([word, definition], ([newWord, newDefinition]) => {
   const inputValue = {
     word: newWord,
     definition: newDefinition,
-    index: props.index,
+    index: props.contentIndex,
   };
 
   emit('setItems', inputValue);
@@ -29,7 +29,7 @@ watch([word, definition], ([newWord, newDefinition]) => {
   <div
     class="flex items-center justify-between gap-[5rem] w-full f-full md:h-[8rem] rounded-[1rem] bg-quizler-blue-3 border-[0.5px] border-white px-[4rem] py-[2rem] md:py-0 border:opacity-10"
   >
-    <span class="text-[2rem] text-white">{{ props.index + 1 }}</span>
+    <span class="text-[2rem] text-white">{{ props.contentIndex + 1 }}</span>
     <div class="flex flex-col md:flex-row w-full gap-[3rem]">
       <template v-if="props.isEdit">
         <input
@@ -50,12 +50,12 @@ watch([word, definition], ([newWord, newDefinition]) => {
         <p
           class="w-full text-[2rem] py-[1rem] px-[1rem] leading-tight text-white"
         >
-          {{ props.content.word }}
+          {{ props.flashCardContent.word }}
         </p>
         <p
           class="w-full text-[2rem] py-[1rem] px-[1rem] leading-tight text-white"
         >
-          {{ props.content.definition }}
+          {{ props.flashCardContent.definition }}
         </p>
       </template>
     </div>

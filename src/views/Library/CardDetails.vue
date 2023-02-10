@@ -29,8 +29,8 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const isEdit: Ref<boolean> = ref(false);
-const index: Ref<number> = ref(1);
-const items: FlashCard[] = reactive([]);
+const contentIndex: Ref<number> = ref(1);
+const flashCardContents: FlashCard[] = reactive([]);
 const isModalOpen: Ref<boolean> = ref(false);
 const slideDirection: Ref<string> = ref('right');
 const cardId: string = route.params.id as string;
@@ -53,8 +53,8 @@ onBeforeMount(() => {
 });
 
 const setItems = (item: Item): void => {
-  items[item.index].word = item.word;
-  items[item.index].definition = item.definition;
+  flashCardContents[item.index].word = item.word;
+  flashCardContents[item.index].definition = item.definition;
 };
 
 const getFlashcardContent = async (user: User): Promise<void> => {
@@ -69,7 +69,7 @@ const getFlashcardContent = async (user: User): Promise<void> => {
 
     querySnapshot.forEach((doc): void => {
       if (doc.exists()) {
-        items.push(...doc.data().flashcards);
+        flashCardContents.push(...doc.data().flashcards);
       }
     });
   } catch (err) {
@@ -80,7 +80,7 @@ const getFlashcardContent = async (user: User): Promise<void> => {
 };
 
 const handleEdit = async (): Promise<void> => {
-  const newItems = [...items];
+  const newItems = [...flashCardContents];
 
   try {
     const docRef = doc(db, 'library', cardId as string);
@@ -96,16 +96,16 @@ const handleEdit = async (): Promise<void> => {
 };
 
 const nextCard = (): void => {
-  if (index.value < items.length) {
+  if (contentIndex.value < flashCardContents.length) {
     slideDirection.value = 'right';
-    index.value += 1;
+    contentIndex.value += 1;
   }
 };
 
 const prevCard = (): void => {
-  if (index.value > 1) {
+  if (contentIndex.value > 1) {
     slideDirection.value = 'left';
-    index.value -= 1;
+    contentIndex.value -= 1;
   }
 };
 
@@ -203,9 +203,9 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
 
       <div class="flex flex-col gap-[3rem]">
         <FlipCard
-          :key="items[index - 1]?.id"
-          :word="items[index - 1]?.word"
-          :definition="items[index - 1]?.definition"
+          :key="flashCardContents[contentIndex - 1]?.id"
+          :word="flashCardContents[contentIndex - 1]?.word"
+          :definition="flashCardContents[contentIndex - 1]?.definition"
           :slideDirection="slideDirection"
         />
         <div
@@ -214,27 +214,27 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
           <i
             class="fa-solid fa-left-long cursor-pointer transition-all duration-100 ease-linear hover:scale-110"
             @click="prevCard"
-          ></i>
-          <span>{{ `${index}/${items?.length}` }}</span>
+          />
+          <span>{{ `${contentIndex}/${flashCardContents?.length}` }}</span>
           <i
             class="fa-solid fa-right-long cursor-pointer transition-all duration-100 ease-linear hover:scale-110"
             @click="nextCard"
-          ></i>
+          />
         </div>
       </div>
     </div>
 
     <div>
       <h2 class="text-[2.5rem] text-white font-bold mb-[5rem]">
-        學習中的詞語 <span>（{{ items.length }}）</span>
+        學習中的詞語 <span>（{{ flashCardContents.length }}）</span>
       </h2>
 
       <div class="flex flex-col gap-[3rem]">
         <CardForm
-          v-for="(item, index) in items"
-          :key="item.id"
-          :content="item"
-          :index="index"
+          v-for="(flashCardContent, i) in flashCardContents"
+          :key="flashCardContent.id"
+          :flashCardContent="flashCardContent"
+          :contentIndex="i"
           :isEdit="isEdit"
           @setItems="setItems"
         />

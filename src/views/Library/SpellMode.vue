@@ -9,7 +9,7 @@ import { useRoute, useRouter } from 'vue-router';
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
 import { useStore } from 'vuex';
 
-import { FinishTestWindow } from '../../components/index';
+import { FinishedQuizeWindow } from '../../components/index';
 import {
   auth,
   db,
@@ -177,7 +177,7 @@ const checkAnswer = (currentQuestion: FlashCard, sequence: number): void => {
         </div>
       </div>
 
-      <FinishTestWindow v-else :score="score" />
+      <FinishedQuizeWindow v-else :score="score" />
     </div>
   </main>
 </template>

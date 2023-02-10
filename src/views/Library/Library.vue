@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
 import type { Ref } from 'vue';
-import type { FlashcardSet, ControlModal } from '../../../types';
+import type { ControlModal } from '../../../types';
 import type { Commit } from 'vuex';
-import type { DocumentData, QueryDocumentSnapshot } from '@firebase/firestore';
+import type { DocumentData } from '@firebase/firestore';
 import { useStore } from 'vuex';
 import { RouterLink, useRouter } from 'vue-router';
 // @ts-ignore
@@ -116,12 +116,12 @@ const controlModalOpen = ({ toggle, id }: ControlModal): void => {
       </router-link>
 
       <template v-if="flashcardSets.length !== 0">
-        <template v-for="flashcardSet in flashcardSets" :key="flashcardSet.id">
-          <FlashCardLibrary
-            :flashcardSet="flashcardSet"
-            @controlModalOpen="controlModalOpen"
-          />
-        </template>
+        <FlashCardLibrary
+          v-for="flashcardSet in flashcardSets"
+          :key="flashcardSet.id"
+          :flashcardSet="flashcardSet"
+          @controlModalOpen="controlModalOpen"
+        />
       </template>
     </div>
   </main>

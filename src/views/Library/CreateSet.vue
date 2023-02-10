@@ -19,8 +19,8 @@ interface Item {
 
 const toast = useToast();
 const router: Router = useRouter();
-const title: Ref<string> = ref('');
-const items: FlashCard[] = reactive([
+const flashCardTitle: Ref<string> = ref('');
+const createdItems: FlashCard[] = reactive([
   {
     id: uuidv4(),
     word: '',
@@ -34,8 +34,8 @@ const inputState = reactive({
 });
 
 const setItems = (item: Item): void => {
-  items[item.index].word = item.word;
-  items[item.index].definition = item.definition;
+  createdItems[item.index].word = item.word;
+  createdItems[item.index].definition = item.definition;
 };
 
 const addRow = (): void => {
@@ -45,12 +45,12 @@ const addRow = (): void => {
     definition: '',
   };
 
-  items.push(newItem);
+  createdItems.push(newItem);
 };
 
 const clearFields = (): void => {
-  title.value = '';
-  items.length = 0;
+  flashCardTitle.value = '';
+  createdItems.length = 0;
 };
 
 const upload = async (title: string): Promise<void> => {
@@ -67,7 +67,7 @@ const upload = async (title: string): Promise<void> => {
 
   const docId: string = uuidv4();
 
-  const newItem = items.filter(
+  const newItem = createdItems.filter(
     (item: FlashCard): boolean => item.word !== '' && item.definition !== '',
   );
 
@@ -105,32 +105,29 @@ const upload = async (title: string): Promise<void> => {
       class="appearance-none bg-transparent text-[2rem] w-full md:w-[60rem] py-[2rem] leading-tight focus:outline-none border-b-[0.5px] border-white text-white placeholder:text-white placeholder:opacity-60"
       type="text"
       placeholder="輸入標題，像是「第一課單字」"
-      v-model="title"
+      v-model="flashCardTitle"
     />
 
-    <div
-      v-for="(item, index) in items"
-      :key="item.id"
-      class="flex flex-col gap-[2rem]"
-    >
+    <div class="flex flex-col gap-[2rem]">
       <CardForm
-        :content="item"
+        v-for="(createdItem, i) in createdItems"
+        :key="createdItem.id"
+        :flashCardContent="createdItem"
         :isEdit="true"
-        :index="index"
+        :contentIndex="i"
         @setItems="setItems"
       />
     </div>
-
     <div class="flex items-center justify-center">
       <i
         class="fa-solid fa-circle-plus flex items-center justify-center text-[5rem] bg-white rounded-full text-quizler-blue-1 cursor-pointer transition-all duration-100 ease-linear hover:scale-110"
         @click="addRow"
-      ></i>
+      />
     </div>
     <button
       :class="`text-[2rem] px-[2rem] py-[1rem] text-white rounded-[1rem] cursor-pointer transition-all duration-100 ease-linear hover:scale-105 ${inputState.style}`"
       :disabled="inputState.status === 'loading' ? true : false"
-      @click="upload(title)"
+      @click="upload(flashCardTitle)"
     >
       {{ inputState.text }}
     </button>
