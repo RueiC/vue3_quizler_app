@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SignInForm, SignUpForm } from './index';
+import { SignInForm, SignUpForm } from "./index";
 </script>
 
 <template>

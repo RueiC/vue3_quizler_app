@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { auth, signOut } from '../includes/firebase';
-import image from '../assets/index';
+import { auth, signOut } from "../includes/firebase";
+import image from "../assets/index";
 </script>
 
 <template>

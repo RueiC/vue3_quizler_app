@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import type { Ref } from 'vue';
-import type { User } from '@firebase/auth';
-import type { FlashCard } from '../../../types';
-import type { Router } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import { useRouter } from 'vue-router';
-import { v4 as uuidv4 } from 'uuid';
+import { ref, reactive } from "vue";
+import type { Ref } from "vue";
+import type { User } from "@firebase/auth";
+import type { FlashCard } from "../../../types";
+import type { Router } from "vue-router";
+import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
+import { v4 as uuidv4 } from "uuid";
 
-import { CardForm } from '../../components/index';
-import { db, auth, doc, setDoc } from '../../includes/firebase';
+import { CardForm } from "../../components/index";
+import { db, auth, doc, setDoc } from "../../includes/firebase";
+import { jsonEval } from "@firebase/util";
 
 interface Item {
   index: number;
@@ -19,37 +20,39 @@ interface Item {
 
 const toast = useToast();
 const router: Router = useRouter();
-const flashCardTitle: Ref<string> = ref('');
+const flashCardTitle: Ref<string> = ref("");
 const createdItems: FlashCard[] = reactive([
   {
     id: uuidv4(),
-    word: '',
-    definition: '',
+    word: "",
+    definition: "",
   },
 ]);
 const inputState = reactive({
-  style: 'bg-quizler-blue-1',
-  text: '建立學習集',
-  status: 'none',
+  style: "bg-quizler-blue-1",
+  text: "建立學習集",
+  status: "none",
 });
 
 const setItems = (item: Item): void => {
-  createdItems[item.index].word = item.word;
-  createdItems[item.index].definition = item.definition;
+  const newItem = JSON.parse(JSON.stringify(item));
+
+  createdItems[newItem.index].word = newItem.word;
+  createdItems[newItem.index].definition = newItem.definition;
 };
 
 const addRow = (): void => {
   const newItem = {
     id: uuidv4(),
-    word: '',
-    definition: '',
+    word: "",
+    definition: "",
   };
 
   createdItems.push(newItem);
 };
 
 const clearFields = (): void => {
-  flashCardTitle.value = '';
+  flashCardTitle.value = "";
   createdItems.length = 0;
 };
 
@@ -57,18 +60,18 @@ const upload = async (title: string): Promise<void> => {
   const user: User | null = auth.currentUser;
 
   if (!user) {
-    toast.error('新增失敗');
+    toast.error("新增失敗");
     return;
   }
 
-  inputState.style = 'bg-gray-300';
-  inputState.text = '建立中';
-  inputState.status = 'loading';
+  inputState.style = "bg-gray-300";
+  inputState.text = "建立中";
+  inputState.status = "loading";
 
   const docId: string = uuidv4();
 
   const newItem = createdItems.filter(
-    (item: FlashCard): boolean => item.word !== '' && item.definition !== '',
+    (item: FlashCard): boolean => item.word !== "" && item.definition !== ""
   );
 
   try {
@@ -79,18 +82,18 @@ const upload = async (title: string): Promise<void> => {
       flashcards: newItem,
     };
 
-    await setDoc(doc(db, 'library', docId), docItem);
+    await setDoc(doc(db, "library", docId), docItem);
 
-    toast.success('成功新增學習集');
+    toast.success("成功新增學習集");
 
-    router.replace('/library');
+    router.replace("/library");
   } catch (err) {
     console.log(err);
   }
 
-  inputState.style = 'bg-quizler-blue-1';
-  inputState.text = '建立';
-  inputState.status = 'none';
+  inputState.style = "bg-quizler-blue-1";
+  inputState.text = "建立";
+  inputState.status = "none";
   clearFields();
 };
 </script>

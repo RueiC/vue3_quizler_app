@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import type { Commit } from 'vuex';
-import type { FieldMeta } from 'vee-validate';
-import type { UserCredential } from '@firebase/auth';
-import { useField, useForm } from 'vee-validate';
+import { useStore } from "vuex";
+import type { Commit } from "vuex";
+import type { FieldMeta } from "vee-validate";
+import type { UserCredential } from "@firebase/auth";
+import { useField, useForm } from "vee-validate";
 import {
   auth,
   createUserWithEmailAndPassword,
   updateProfile,
-} from '../includes/firebase';
-import image from '../assets/index';
-import { schema } from '../includes/validator';
-import { reactive } from 'vue';
+} from "../includes/firebase";
+import image from "../assets/index";
+import { schema } from "../includes/validator";
+import { reactive } from "vue";
 
 interface Props {
   type: string;
@@ -31,9 +31,9 @@ const { handleSubmit } = useForm<Record<string, any>>({
   validationSchema: schema,
 });
 const inputState = reactive({
-  style: 'bg-quizler-blue-1',
-  text: '註冊',
-  status: 'none',
+  style: "bg-quizler-blue-1",
+  text: "註冊",
+  status: "none",
 });
 
 const {
@@ -42,7 +42,7 @@ const {
   errorMessage: nameErrorMessage,
   handleBlur: handleNameBlur,
   handleChange: handleNameChange,
-} = useField<InputString>('name');
+} = useField<InputString>("name");
 
 const {
   value: email,
@@ -50,7 +50,7 @@ const {
   errorMessage: emailErrorMessage,
   handleBlur: handleEmailBlur,
   handleChange: handleEmailChange,
-} = useField<InputString>('email');
+} = useField<InputString>("email");
 
 const {
   value: password,
@@ -58,19 +58,19 @@ const {
   errorMessage: passwordErrorMessage,
   handleBlur: handlePasswordBlur,
   handleChange: handlePasswordChange,
-} = useField<InputString>('password');
+} = useField<InputString>("password");
 
 const signUp = handleSubmit<Promise<void>>(
   async (values, actions): Promise<void> => {
-    inputState.style = 'bg-gray-300';
-    inputState.text = '處理中';
-    inputState.status = 'loading';
+    inputState.style = "bg-gray-300";
+    inputState.text = "處理中";
+    inputState.status = "loading";
 
     try {
       await createUserWithEmailAndPassword(
         auth,
         values.email,
-        values.password,
+        values.password
       ).then(async (userCredential: UserCredential): Promise<void> => {
         if (!userCredential) return;
 
@@ -78,17 +78,17 @@ const signUp = handleSubmit<Promise<void>>(
           displayName: values.name,
         }).then(() => {
           actions.resetForm();
-          commit('TOGGLE_FORM_TYPE');
+          commit("TOGGLE_FORM_TYPE");
         });
       });
     } catch (err) {
       console.log(err);
     }
 
-    inputState.style = 'bg-quizler-blue-1';
-    inputState.text = '註冊';
-    inputState.status = 'none';
-  },
+    inputState.style = "bg-quizler-blue-1";
+    inputState.text = "註冊";
+    inputState.status = "none";
+  }
 );
 </script>
 

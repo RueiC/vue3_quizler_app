@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, watch, ref, type Ref } from 'vue';
+import { defineProps, watch, ref, type Ref } from "vue";
 
 interface Props {
   optionNum: number;
@@ -21,10 +21,10 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(['checkAnswer']);
-const defaultStyle = 'bg-quizler-blue-3 text-white';
-const correctStyle = 'bg-green-400';
-const wrongStyle = 'bg-red-400';
+const emit = defineEmits(["checkAnswer"]);
+const defaultStyle = "bg-quizler-blue-3 text-white";
+const correctStyle = "bg-green-400";
+const wrongStyle = "bg-red-400";
 
 const optionStyle: Ref<string> = ref(defaultStyle);
 
@@ -33,7 +33,7 @@ watch(props.quizeState, (state) => {
 });
 
 const handleOptionStyle = (quizeState: any, optionNum: number): string => {
-  let style = '';
+  let style = "";
   const rightOption = quizeState?.optionsState?.rightOption;
   const wrongOption = quizeState?.optionsState?.wrongOption;
 
@@ -51,7 +51,7 @@ const handleOptionStyle = (quizeState: any, optionNum: number): string => {
 const handleCheckAnswer = (isDisabled: boolean): void => {
   if (isDisabled) return;
 
-  emit('checkAnswer', props.optionNum);
+  emit("checkAnswer", props.optionNum);
 };
 </script>
 

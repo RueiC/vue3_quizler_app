@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import image from '../assets/index';
-import { SignInForm, SignUpForm } from './index';
+import { useStore } from "vuex";
+import image from "../assets/index";
+import { SignInForm, SignUpForm } from "./index";
 
 const { getters }: { getters: any } = useStore();
 </script>

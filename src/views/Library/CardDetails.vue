@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, reactive } from 'vue';
-import { useStore } from 'vuex';
-import type { Commit } from 'vuex';
-import type { Ref } from 'vue';
+import { onBeforeMount, ref, reactive } from "vue";
+import { useStore } from "vuex";
+import type { Commit } from "vuex";
+import type { Ref } from "vue";
 // @ts-ignore
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
-import { RouterLink, useRoute, useRouter } from 'vue-router';
-import type { User } from '@firebase/auth';
-import { useToast } from 'vue-toastification';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import ClipLoader from "vue-spinner/src/ClipLoader.vue";
+import { RouterLink, useRoute, useRouter } from "vue-router";
+import type { User } from "@firebase/auth";
+import { useToast } from "vue-toastification";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-import type { FlashCard, ControlModal } from '../../../types';
-import { CardForm, FlipCard, ConfirmModal } from '../../components/index';
+import type { FlashCard, ControlModal } from "../../../types";
+import { CardForm, FlipCard, ConfirmModal } from "../../components/index";
 import {
   auth,
   db,
@@ -23,7 +23,7 @@ import {
   deleteDoc,
   updateDoc,
   onAuthStateChanged,
-} from '../../includes/firebase';
+} from "../../includes/firebase";
 
 const route = useRoute();
 const router = useRouter();
@@ -32,7 +32,7 @@ const isEdit: Ref<boolean> = ref(false);
 const contentIndex: Ref<number> = ref(1);
 const flashCardContents: FlashCard[] = reactive([]);
 const isModalOpen: Ref<boolean> = ref(false);
-const slideDirection: Ref<string> = ref('right');
+const slideDirection: Ref<string> = ref("right");
 const cardId: string = route.params.id as string;
 
 const { commit, getters }: { commit: Commit; getters: any } = useStore();
@@ -44,7 +44,7 @@ interface Item {
 }
 
 onBeforeMount(() => {
-  commit('SHOW_SPINNER');
+  commit("SHOW_SPINNER");
 
   onAuthStateChanged(auth, (user: User | null): void => {
     if (!user) return;
@@ -53,16 +53,18 @@ onBeforeMount(() => {
 });
 
 const setItems = (item: Item): void => {
-  flashCardContents[item.index].word = item.word;
-  flashCardContents[item.index].definition = item.definition;
+  const newItem = JSON.parse(JSON.stringify(item));
+
+  flashCardContents[newItem.index].word = newItem.word;
+  flashCardContents[newItem.index].definition = newItem.definition;
 };
 
 const getFlashcardContent = async (user: User): Promise<void> => {
   try {
     const q = query(
-      collection(db, 'library'),
-      where('uid', '==', user.uid),
-      where('id', '==', cardId),
+      collection(db, "library"),
+      where("uid", "==", user.uid),
+      where("id", "==", cardId)
     );
 
     const querySnapshot = await getDocs(q);
@@ -76,14 +78,14 @@ const getFlashcardContent = async (user: User): Promise<void> => {
     console.log(err);
   }
 
-  commit('HIDE_SPINNER');
+  commit("HIDE_SPINNER");
 };
 
 const handleEdit = async (): Promise<void> => {
   const newItems = [...flashCardContents];
 
   try {
-    const docRef = doc(db, 'library', cardId as string);
+    const docRef = doc(db, "library", cardId as string);
 
     await updateDoc(docRef, {
       flashcards: newItems,
@@ -97,14 +99,14 @@ const handleEdit = async (): Promise<void> => {
 
 const nextCard = (): void => {
   if (contentIndex.value < flashCardContents.length) {
-    slideDirection.value = 'right';
+    slideDirection.value = "right";
     contentIndex.value += 1;
   }
 };
 
 const prevCard = (): void => {
   if (contentIndex.value > 1) {
-    slideDirection.value = 'left';
+    slideDirection.value = "left";
     contentIndex.value -= 1;
   }
 };
@@ -113,10 +115,10 @@ const deleteFlashCard = async (): Promise<void> => {
   if (!cardId) return;
 
   try {
-    await deleteDoc(doc(db, 'library', cardId));
+    await deleteDoc(doc(db, "library", cardId));
 
-    toast.success('刪除成功');
-    router.replace('/library');
+    toast.success("刪除成功");
+    router.replace("/library");
   } catch (err) {
     console.log(err);
   }

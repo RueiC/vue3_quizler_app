@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount } from 'vue';
-import type { Ref } from 'vue';
-import type { User } from '@firebase/auth';
-import type { Commit } from 'vuex';
-import type { FlashCard } from '../../../types';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, reactive, onBeforeMount } from "vue";
+import type { Ref } from "vue";
+import type { User } from "@firebase/auth";
+import type { Commit } from "vuex";
+import type { FlashCard } from "../../../types";
+import { useRoute, useRouter } from "vue-router";
 // @ts-ignore
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
-import { useStore } from 'vuex';
+import ClipLoader from "vue-spinner/src/ClipLoader.vue";
+import { useStore } from "vuex";
 
-import { FinishedQuizeWindow } from '../../components/index';
+import { FinishedQuizeWindow } from "../../components/index";
 import {
   auth,
   db,
   getDoc,
   doc,
   onAuthStateChanged,
-} from '../../includes/firebase';
+} from "../../includes/firebase";
 
 interface Score {
   correct: number;
@@ -26,11 +26,11 @@ interface Score {
 const router = useRouter();
 const route = useRoute();
 const questionSets: Ref<FlashCard[]> = ref([]);
-const inputAnswer: Ref<string> = ref('');
+const inputAnswer: Ref<string> = ref("");
 const currentSequence: Ref<number> = ref(0);
 const isCorrect = reactive({
-  msg: '你的答案',
-  optionColor: 'border-white text-white',
+  msg: "你的答案",
+  optionColor: "border-white text-white",
   disabledInput: false,
 });
 const score: Score = reactive({ correct: 0, wrong: 0 });
@@ -51,7 +51,7 @@ const vInputState = {
 };
 
 onBeforeMount(() => {
-  commit('SHOW_SPINNER');
+  commit("SHOW_SPINNER");
   onAuthStateChanged(auth, (user: User | null): void => {
     if (!user) return;
 
@@ -61,7 +61,7 @@ onBeforeMount(() => {
 
 const getFlashcardContent = async (): Promise<void> => {
   try {
-    const docRef = doc(db, 'library', cardId);
+    const docRef = doc(db, "library", cardId);
     const docSnap = await getDoc(docRef);
 
     if (!docSnap.exists()) return;
@@ -72,21 +72,21 @@ const getFlashcardContent = async (): Promise<void> => {
     console.log(err);
   }
 
-  commit('HIDE_SPINNER');
+  commit("HIDE_SPINNER");
 };
 
 const responseMsg = (correct: boolean): void => {
   isCorrect.disabledInput = true;
 
   if (correct) {
-    isCorrect.msg = '答對了！';
-    isCorrect.optionColor = 'border-green-300 text-green-300';
+    isCorrect.msg = "答對了！";
+    isCorrect.optionColor = "border-green-300 text-green-300";
 
     score.correct += 1;
   }
   if (!correct) {
-    isCorrect.msg = '加油！很接近了';
-    isCorrect.optionColor = 'border-red-400 text-red-400';
+    isCorrect.msg = "加油！很接近了";
+    isCorrect.optionColor = "border-red-400 text-red-400";
     score.wrong += 1;
   }
 };
@@ -94,21 +94,21 @@ const responseMsg = (correct: boolean): void => {
 const nextQuestion = (isFinish: boolean): void => {
   if (!isFinish) {
     setTimeout(() => {
-      inputAnswer.value = '';
+      inputAnswer.value = "";
       currentSequence.value += 1;
-      isCorrect.optionColor = 'border-white text-white';
-      isCorrect.msg = '你的答案';
+      isCorrect.optionColor = "border-white text-white";
+      isCorrect.msg = "你的答案";
       isCorrect.disabledInput = false;
     }, 2000);
   } else {
     setTimeout(() => {
       questionSets.value.length = 0;
       currentSequence.value += 1;
-      inputAnswer.value = '';
+      inputAnswer.value = "";
       isCorrect.disabledInput = false;
 
       setTimeout(() => {
-        router.push({ name: 'flash-card', params: { cardId } });
+        router.push({ name: "flash-card", params: { cardId } });
       }, 2000);
     }, 2500);
   }

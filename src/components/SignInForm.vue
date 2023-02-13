@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { useStore } from 'vuex';
-import type { Commit } from 'vuex';
-import type { FieldMeta } from 'vee-validate';
-import { useRouter } from 'vue-router';
-import { useField, useForm } from 'vee-validate';
+import { reactive } from "vue";
+import { useStore } from "vuex";
+import type { Commit } from "vuex";
+import type { FieldMeta } from "vee-validate";
+import { useRouter } from "vue-router";
+import { useField, useForm } from "vee-validate";
 
-import { auth, signInWithEmailAndPassword } from '../includes/firebase';
-import image from '../assets/index';
-import { schema } from '../includes/validator';
+import { auth, signInWithEmailAndPassword } from "../includes/firebase";
+import image from "../assets/index";
+import { schema } from "../includes/validator";
 
 interface Props {
   type: string;
@@ -27,9 +27,9 @@ const props = defineProps<Props>();
 const router = useRouter();
 const { commit, getters }: { commit: Commit; getters: any } = useStore();
 const inputState = reactive({
-  style: 'bg-quizler-blue-1',
-  text: '登入',
-  status: 'none',
+  style: "bg-quizler-blue-1",
+  text: "登入",
+  status: "none",
 });
 
 const { handleSubmit } = useForm<Record<string, any>>({
@@ -42,7 +42,7 @@ const {
   errorMessage: emailErrorMessage,
   handleBlur: handleEmailBlur,
   handleChange: handleEmailChange,
-} = useField<InputString>('email');
+} = useField<InputString>("email");
 
 const {
   value: password,
@@ -50,25 +50,25 @@ const {
   errorMessage: passwordErrorMessage,
   handleBlur: handlePasswordBlur,
   handleChange: handlePasswordChange,
-} = useField<InputString>('password');
+} = useField<InputString>("password");
 
 const signIn = handleSubmit(async (values, actions): Promise<void> => {
-  inputState.style = 'bg-gray-300';
-  inputState.text = '登入中';
-  inputState.status = 'loading';
+  inputState.style = "bg-gray-300";
+  inputState.text = "登入中";
+  inputState.status = "loading";
 
   try {
     await signInWithEmailAndPassword(auth, values.email, values.password);
 
     actions.resetForm();
-    router.replace('/library');
+    router.replace("/library");
   } catch (err) {
     console.log(err);
   }
 
-  inputState.style = 'bg-quizler-blue-1';
-  inputState.text = '登入';
-  inputState.status = 'none';
+  inputState.style = "bg-quizler-blue-1";
+  inputState.text = "登入";
+  inputState.status = "none";
 });
 </script>
 

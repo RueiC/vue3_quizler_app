@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { defineProps, ref, watch } from 'vue';
-import type { Ref } from 'vue';
-import type { FlashCard } from '../../types';
+import { defineProps, ref, watch } from "vue";
+import type { Ref } from "vue";
+import type { FlashCard } from "../../types";
 
 interface Props {
   flashCardContent: FlashCard;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(['setItems']);
+const emit = defineEmits(["setItems"]);
 const word: Ref<string> = ref(props.flashCardContent.word);
 const definition: Ref<string> = ref(props.flashCardContent.definition);
 
@@ -21,7 +21,7 @@ watch([word, definition], ([newWord, newDefinition]) => {
     index: props.contentIndex,
   };
 
-  emit('setItems', inputValue);
+  emit("setItems", inputValue);
 });
 </script>
 
