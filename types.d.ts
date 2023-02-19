@@ -21,9 +21,7 @@ interface ControlModal {
   id: string;
 }
 
-interface FlashcardSet {
-  id: string;
+interface FlashcardSet extends FlashCard {
   title: string;
-  uid: string;
   flashcards: FlashCard[];
 }
