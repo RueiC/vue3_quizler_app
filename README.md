@@ -1,46 +1,15 @@
-# quizler
+# Vue 3｜Quizler - 通過單詞卡學習新語言
 
-This template should help get you started developing with Vue 3 in Vite.
+Website Demo - https://vue3-quizler-app.vercel.app
 
-## Recommended IDE Setup
+<img width="700" alt="截圖 2023-02-19 23 02 10" src="https://user-images.githubusercontent.com/104335056/222036772-041fee82-6beb-4b1b-8122-6cfb015865c1.png">
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+做這個專案的主要目的在於：
+1. 學習新框架 (Vue) 的使用，了解不同框架之間的差異
+2. 學習「Quizlet」功能的實作 (Quizlet clone)
+3. 運用Typescript來解決Javascript型別的問題
+4. 學習CRUD的實作
 
-## Type Support for `.vue` Imports in TS
+在這個專案中收穫最多的是，應用新學習的陌生框架來實作功能，以及獨立完成問答測驗 (quiz) 功能邏輯的實作。
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+使用技術：Vue 3 / Vuex / VeeValidate / Vite / Typescript / TailwindCSS / Firebase / Yup
