@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { defineProps, ref } from "vue";
-import type { Ref } from "vue";
-import type { FlashcardSet } from "../../types";
-import { RouterLink } from "vue-router";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { defineProps, ref } from 'vue';
+import type { Ref } from 'vue';
+import type { FlashcardSet } from '../../types';
+import { RouterLink } from 'vue-router';
 
 interface Props {
   flashcardSet: FlashcardSet;
@@ -23,21 +23,26 @@ const onHovered: Ref<boolean> = ref(false);
       :to="{ name: 'flash-card', params: { id: props.flashcardSet.id } }"
     >
       <div
-        class="flex items-center justify-center bg-blue-200 w-full h-full rounded-[1rem]"
+        class="flex flex-col gap-[0.5rem] items-start justify-start bg-quizler-blue-3 w-full h-full rounded-[1rem] p-[3.5rem]"
       >
-        <p class="text-[2rem] font-medium">{{ props.flashcardSet.title }}</p>
+        <p class="text-[2.2rem] font-medium text-white">
+          {{ props.flashcardSet.title }}
+        </p>
+        <p class="text-[1.7rem] text-white/70">
+          {{ props.flashcardSet.flashcards.length }}個詞語
+        </p>
       </div>
     </router-link>
 
     <div
       v-show="onHovered"
-      class="absolute top-[2rem] right-[2rem] flex items-center justify-center bg-white w-[5rem] h-[5rem] p-[1rem] rounded-full opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-200 ease-linear"
+      class="absolute bottom-[2.5rem] right-[2.5rem] flex items-center justify-center bg-white w-[4rem] h-[4rem] p-[1rem] rounded-full opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-200 ease-linear"
       @click="
         $emit('controlModalOpen', { toggle: true, id: props.flashcardSet.id })
       "
     >
       <font-awesome-icon
-        class="text-[2rem] opacity-80"
+        class="text-[1.7rem] opacity-80"
         icon="fa-solid fa-trash-can"
       />
     </div>

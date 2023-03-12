@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import type { Ref } from "vue";
-import type { User } from "@firebase/auth";
-import type { FlashCard } from "../../../types";
-import type { Router } from "vue-router";
-import { useToast } from "vue-toastification";
-import { useRouter } from "vue-router";
-import { v4 as uuidv4 } from "uuid";
+import { ref, reactive } from 'vue';
+import type { Ref } from 'vue';
+import type { User } from '@firebase/auth';
+import type { FlashCard } from '../../../types';
+import type { Router } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
+import { v4 as uuidv4 } from 'uuid';
 
-import { CardForm } from "../../components/index";
-import { db, auth, doc, setDoc } from "../../includes/firebase";
-import { jsonEval } from "@firebase/util";
+import { CardForm, Tag } from '../../components/index';
+import { db, auth, doc, setDoc } from '../../includes/firebase';
 
 interface Item {
   index: number;
@@ -20,18 +19,20 @@ interface Item {
 
 const toast = useToast();
 const router: Router = useRouter();
-const flashCardTitle: Ref<string> = ref("");
+const flashCardTitle: Ref<string> = ref('');
+const tags: Ref<string[]> = ref([]);
+const inputTags: Ref<string> = ref('');
 const createdItems: FlashCard[] = reactive([
   {
     id: uuidv4(),
-    word: "",
-    definition: "",
+    word: '',
+    definition: '',
   },
 ]);
 const inputState = reactive({
-  style: "bg-quizler-blue-1",
-  text: "建立學習集",
-  status: "none",
+  style: 'bg-quizler-blue-1',
+  text: '建立學習集',
+  status: 'none',
 });
 
 const setItems = (item: Item): void => {
@@ -44,15 +45,15 @@ const setItems = (item: Item): void => {
 const addRow = (): void => {
   const newItem = {
     id: uuidv4(),
-    word: "",
-    definition: "",
+    word: '',
+    definition: '',
   };
 
   createdItems.push(newItem);
 };
 
 const clearFields = (): void => {
-  flashCardTitle.value = "";
+  flashCardTitle.value = '';
   createdItems.length = 0;
 };
 
@@ -60,18 +61,18 @@ const upload = async (title: string): Promise<void> => {
   const user: User | null = auth.currentUser;
 
   if (!user) {
-    toast.error("新增失敗");
+    toast.error('新增失敗');
     return;
   }
 
-  inputState.style = "bg-gray-300";
-  inputState.text = "建立中";
-  inputState.status = "loading";
+  inputState.style = 'bg-gray-300';
+  inputState.text = '建立中';
+  inputState.status = 'loading';
 
   const docId: string = uuidv4();
 
   const newItem = createdItems.filter(
-    (item: FlashCard): boolean => item.word !== "" && item.definition !== ""
+    (item: FlashCard): boolean => item.word !== '' && item.definition !== '',
   );
 
   try {
@@ -82,19 +83,33 @@ const upload = async (title: string): Promise<void> => {
       flashcards: newItem,
     };
 
-    await setDoc(doc(db, "library", docId), docItem);
+    await setDoc(doc(db, 'library', docId), docItem);
 
-    toast.success("成功新增學習集");
+    toast.success('成功新增學習集');
 
-    router.replace("/library");
+    router.replace('/library');
   } catch (err) {
     console.log(err);
   }
 
-  inputState.style = "bg-quizler-blue-1";
-  inputState.text = "建立";
-  inputState.status = "none";
+  inputState.style = 'bg-quizler-blue-1';
+  inputState.text = '建立';
+  inputState.status = 'none';
   clearFields();
+};
+
+const addTag = (e: KeyboardEvent) => {
+  if (e.key !== 'Enter') return;
+
+  if (!tags.value.includes(inputTags.value)) {
+    tags.value.push(inputTags.value);
+    inputTags.value = '';
+  }
+};
+
+const removeTag = (removedTag: string): void => {
+  const newTags = tags.value.filter((tag) => tag !== removedTag);
+  tags.value = newTags;
 };
 </script>
 
@@ -104,12 +119,28 @@ const upload = async (title: string): Promise<void> => {
   >
     <h1 class="text-[4rem] text-white font-bold">建立學習集</h1>
 
-    <input
-      class="appearance-none bg-transparent text-[2rem] w-full md:w-[60rem] py-[2rem] leading-tight focus:outline-none border-b-[0.5px] border-white text-white placeholder:text-white placeholder:opacity-60"
-      type="text"
-      placeholder="輸入標題，像是「第一課單字」"
-      v-model="flashCardTitle"
-    />
+    <div>
+      <input
+        class="appearance-none bg-transparent text-[2rem] w-full md:w-[60rem] py-[1.7rem] leading-tight focus:outline-none border-b-[0.5px] border-white text-white placeholder:text-white placeholder:opacity-60 mb-[2rem]"
+        type="text"
+        placeholder="輸入標題，像是「第一課單字」"
+        v-model="flashCardTitle"
+      />
+
+      <ul
+        class="flex gap-[1.5rem] items-center text-white border-b-[0.5px] border-white w-full md:w-[60rem]"
+      >
+        <Tag v-for="tag in tags" :key="tag" :tag="tag" :removeTag="removeTag" />
+
+        <input
+          class="appearance-none bg-transparent text-[1.7rem] py-[1.7rem] leading-tight focus:outline-none text-white placeholder:text-white placeholder:opacity-60"
+          type="text"
+          :placeholder="tags.length ? '' : '新增標籤'"
+          v-model="inputTags"
+          @keyup="addTag"
+        />
+      </ul>
+    </div>
 
     <div class="flex flex-col gap-[2rem]">
       <CardForm

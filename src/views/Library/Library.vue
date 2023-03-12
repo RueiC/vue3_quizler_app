@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
-import type { Ref } from "vue";
-import type { ControlModal } from "../../../types";
-import type { Commit } from "vuex";
-import type { DocumentData } from "@firebase/firestore";
-import { useStore } from "vuex";
-import { RouterLink, useRouter } from "vue-router";
+import { onBeforeMount, ref } from 'vue';
+import type { Ref } from 'vue';
+import type { ControlModal } from '../../../types';
+import type { Commit } from 'vuex';
+import type { DocumentData } from '@firebase/firestore';
+import { useStore } from 'vuex';
+import { RouterLink, useRouter } from 'vue-router';
 // @ts-ignore
-import ClipLoader from "vue-spinner/src/ClipLoader.vue";
-import type { User } from "@firebase/auth";
-import { useToast } from "vue-toastification";
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
+import type { User } from '@firebase/auth';
+import { useToast } from 'vue-toastification';
 
 import {
   db,
@@ -21,22 +21,22 @@ import {
   getDocs,
   doc,
   deleteDoc,
-} from "../../includes/firebase";
-import { FlashCardLibrary, ConfirmModal } from "../../components/index";
+} from '../../includes/firebase';
+import { FlashCardLibrary, ConfirmModal } from '../../components/index';
 
 const { commit, getters }: { commit: Commit; getters: any } = useStore();
 const flashcardSets: DocumentData = ref([]);
 const isModalOpen: Ref<boolean> = ref(false);
-const confirmedDeleteId: Ref<string> = ref("");
+const confirmedDeleteId: Ref<string> = ref('');
 const firebaseUser: Ref<User | null> = ref(null);
 const router = useRouter();
 const toast = useToast();
 
 onBeforeMount(() => {
-  commit("SHOW_SPINNER");
+  commit('SHOW_SPINNER');
 
   onAuthStateChanged(auth, (user: User | null): void => {
-    if (!user) router.replace("/");
+    if (!user) router.replace('/');
 
     firebaseUser.value = user;
     getLibrary(user);
@@ -47,7 +47,7 @@ const getLibrary = async (user: User | null): Promise<void> => {
   if (!user) return;
 
   try {
-    const q = query(collection(db, "library"), where("uid", "==", user?.uid));
+    const q = query(collection(db, 'library'), where('uid', '==', user?.uid));
 
     const querySnapshot = await getDocs(q);
     flashcardSets.value.length = 0;
@@ -61,19 +61,19 @@ const getLibrary = async (user: User | null): Promise<void> => {
   } catch (err) {
     console.log(err);
   }
-  commit("HIDE_SPINNER");
+  commit('HIDE_SPINNER');
 };
 
 const deleteFlashCard = async (): Promise<void> => {
   isModalOpen.value = false;
-  if (confirmedDeleteId.value === "") return;
+  if (confirmedDeleteId.value === '') return;
 
   try {
-    await deleteDoc(doc(db, "library", confirmedDeleteId.value));
+    await deleteDoc(doc(db, 'library', confirmedDeleteId.value));
 
-    confirmedDeleteId.value = "";
+    confirmedDeleteId.value = '';
     getLibrary(firebaseUser.value);
-    toast.success("刪除成功");
+    toast.success('刪除成功');
   } catch (err) {
     console.log(err);
   }
@@ -115,7 +115,7 @@ const controlModalOpen = ({ toggle, id }: ControlModal): void => {
         </div>
       </router-link>
 
-      <template v-if="flashcardSets.length !== 0">
+      <template v-if="flashcardSets.length !== 0 && firebaseUser">
         <FlashCardLibrary
           v-for="flashcardSet in flashcardSets"
           :key="flashcardSet.id"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { auth, signOut } from "../includes/firebase";
-import image from "../assets/index";
+import { auth, signOut } from '../includes/firebase';
+import image from '../assets/index';
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import image from "../assets/index";
     :class="`bg-quizler-blue-2 border-b-[0.5px] border-white/50 px-[5rem] py-[2.5rem]`"
   >
     <!-- Nav -->
-    <nav class="flex items-center justify-between">
+    <nav class="flex items-center justify-between gap-[4rem]">
       <!-- Left -->
       <div class="flex items-center justify-center gap-[2rem]">
         <a href="/library">
@@ -18,6 +18,14 @@ import image from "../assets/index";
             alt="Logo"
           />
         </a>
+      </div>
+
+      <div class="flex-1">
+        <input
+          class="w-full bg-quizler-blue-3 rounded-[1.2rem] px-[3rem] py-[1rem] text-[1.5rem] focus:outline-none text-white"
+          type="text"
+          placeholder="搜尋學習集"
+        />
       </div>
 
       <!-- Right -->

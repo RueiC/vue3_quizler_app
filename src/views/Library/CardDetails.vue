@@ -175,7 +175,15 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
             <div
               class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:scale-110"
             >
-              <i class="fa-solid fa-spell-check"></i>
+              <i class="w-[2rem] fa-solid fa-note-sticky"></i>
+              <p>單字卡</p>
+            </div>
+          </router-link>
+          <router-link :to="{ name: 'spell-mode' }">
+            <div
+              class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:scale-110"
+            >
+              <i class="w-[2rem] fa-solid fa-spell-check"></i>
               <p>拼寫測試</p>
             </div>
           </router-link>
@@ -183,7 +191,7 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
             <div
               class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:scale-110"
             >
-              <i class="fa-solid fa-graduation-cap"></i>
+              <i class="w-[2rem] fa-solid fa-graduation-cap"></i>
               <p>學習測試</p>
             </div>
           </router-link>
@@ -191,7 +199,7 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
 
         <button
           v-if="!isEdit"
-          class="text-[2.5rem] px-[2.5rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105"
+          class="text-[2rem] px-[2rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105"
           type="button"
           @click="(): boolean => (isEdit = true)"
         >
@@ -199,7 +207,7 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
         </button>
         <button
           v-else
-          class="text-[2.5rem] px-[2.5rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105"
+          class="text-[2rem] px-[2rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105"
           type="button"
           @click="handleEdit"
         >
