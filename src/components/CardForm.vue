@@ -27,7 +27,7 @@ watch([word, definition], ([newWord, newDefinition]) => {
 
 <template>
   <div
-    class="flex items-center justify-between gap-[5rem] w-full f-full md:h-[8rem] rounded-[1rem] bg-quizler-blue-3 border-[0.5px] border-white px-[4rem] py-[2rem] md:py-0 border:opacity-10"
+    class="flex items-center justify-between gap-[5rem] w-full f-full md:h-[8rem] rounded-[1rem] bg-quizler-blue-3/50 border-[0.5px] border-white px-[4rem] py-[2rem] md:py-0 border:opacity-10"
   >
     <span class="text-[2rem] text-white">{{ props.contentIndex + 1 }}</span>
     <div class="flex flex-col md:flex-row w-full gap-[3rem]">
