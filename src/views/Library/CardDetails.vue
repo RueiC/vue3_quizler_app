@@ -99,6 +99,8 @@ const handleEdit = async (): Promise<void> => {
   isEdit.value = false;
 };
 
+const handleIndividualEdit = async (): Promise<void> => {};
+
 const nextCard = (): void => {
   if (contentIndex.value < flashCardContents.length) {
     slideDirection.value = 'right';
@@ -152,18 +154,31 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
     v-if="!getters.isShowSpinnder"
     class="flex flex-col gap-[12rem] bg-quizler-blue-2 w-full h-full px-[5rem] md:px-[15rem] lg:px-[20rem] xl:px-[30rem] py-[8.5rem]"
   >
-    <div class="flex items-center justify-between w-full">
-      <h1 class="text-[4rem] text-white font-bold">
-        {{ flashCardTitle }}
-      </h1>
-      <div
-        class="flex items-center justify-center bg-white w-[5rem] h-[5rem] p-[1rem] rounded-full opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-200 ease-linear cursor-pointer"
-        @click="isModalOpen = true"
-      >
-        <font-awesome-icon
-          class="text-[2rem] opacity-80"
-          icon="fa-solid fa-trash-can"
-        />
+    <div class="flex flex-col gap-[2rem]">
+      <div class="flex items-center justify-between w-full">
+        <h1 class="text-[4rem] text-white font-bold">
+          {{ flashCardTitle }}
+        </h1>
+        <div
+          class="flex items-center justify-center bg-white w-[5rem] h-[5rem] p-[1rem] rounded-full opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-200 ease-linear cursor-pointer"
+          @click="isModalOpen = true"
+        >
+          <font-awesome-icon
+            class="text-[2rem] opacity-80"
+            icon="fa-solid fa-trash-can"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-[1rem] text-[1.6rem]">
+        <span
+          class="px-[1.2rem] py-[0.6rem] bg-white/80 rounded-full cursor-pointer hover:opacity-80 duration-300 transition-all"
+          >tag-1</span
+        >
+        <span
+          class="px-[1.2rem] py-[0.6rem] bg-white/80 rounded-full cursor-pointer hover:opacity-80 duration-300 transition-all"
+          >tag-2</span
+        >
       </div>
     </div>
 
@@ -173,7 +188,7 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
           <p class="text-[2.5rem] font-medium">學習模式</p>
           <router-link :to="{ name: 'spell-mode' }">
             <div
-              class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:scale-105 bg-quizler-blue-3/50 px-[3rem] py-[1.6rem] rounded-[1rem] text-[2rem]"
+              class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:translate-y-[-3px] bg-quizler-blue-3/50 px-[3rem] py-[1.6rem] rounded-[1rem] text-[2rem]"
             >
               <i class="w-[2rem] fa-solid fa-spell-check"></i>
               <p>拼寫測試</p>
@@ -181,7 +196,7 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
           </router-link>
           <router-link :to="{ name: 'learn-mode' }">
             <div
-              class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:scale-105 bg-quizler-blue-3/50 px-[3rem] py-[1.6rem] rounded-[1rem] text-[2rem]"
+              class="flex items-center gap-[1.5rem] cursor-pointer transition-all duration-100 ease-linear hover:translate-y-[-3px] bg-quizler-blue-3/50 px-[3rem] py-[1.6rem] rounded-[1rem] text-[2rem]"
             >
               <i class="w-[2rem] fa-solid fa-graduation-cap"></i>
               <p>學習測試</p>
@@ -196,14 +211,25 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
         </div>
       </div>
 
-      <div class="flex flex-col gap-[3rem]">
+      <div class="flex flex-col gap-[2.5rem]">
         <FlipCard
           :key="flashCardContents[contentIndex - 1]?.id"
           :word="flashCardContents[contentIndex - 1]?.word"
           :definition="flashCardContents[contentIndex - 1]?.definition"
           :slideDirection="slideDirection"
         />
-        <div
+        <div class="flex items-center justify-center gap-[3rem] text-[3rem]">
+          <i
+            class="fa-solid fa-circle-xmark text-red-300 cursor-pointer hover:scale-110 transition-all duration-300 hover:opacity-80"
+          ></i>
+          <span class="text-white text-[1.8rem] font-medium">{{
+            `${contentIndex}/${flashCardContents?.length}`
+          }}</span>
+          <i
+            class="fa-solid fa-circle-check text-green-300 cursor-pointer hover:scale-110 transition-all duration-300 hover:opacity-80"
+          ></i>
+        </div>
+        <!-- <div
           class="flex items-center justify-center gap-[5rem] text-white text-[1.8rem]"
         >
           <i
@@ -215,7 +241,7 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
             class="fa-solid fa-right-long cursor-pointer transition-all duration-100 ease-linear hover:scale-110 text-[2rem]"
             @click="nextCard"
           />
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -228,22 +254,22 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
       </div>
       <div class="flex items-center justify-between">
         <div
-          class="bg-quizler-blue-3/50 px-[5rem] py-[3rem] text-[2rem] rounded-[1rem] text-white font-medium"
+          class="bg-quizler-blue-3/50 px-[5rem] py-[3rem] text-[2rem] rounded-[1rem] text-white font-medium border-b-[2px] border-red-300 cursor-pointer hover:translate-y-[-4px] transition-all duration-300 hover:opacity-80"
         >
-          <span>0</span>
+          <span class="mr-[2rem]">0</span>
           <span>未學習</span>
         </div>
         <div
-          class="bg-quizler-blue-3/50 px-[5rem] py-[3rem] text-[2rem] rounded-[1rem] text-white font-medium"
+          class="bg-quizler-blue-3/50 px-[5rem] py-[3rem] text-[2rem] rounded-[1rem] text-white font-medium border-b-[2px] border-orange-300 cursor-pointer hover:translate-y-[-4px] transition-all duration-300 hover:opacity-80"
         >
-          <span>0</span>
-          <span>未學習</span>
+          <span class="mr-[2rem]">0</span>
+          <span>仍在學習</span>
         </div>
         <div
-          class="bg-quizler-blue-3/50 px-[5rem] py-[3rem] text-[2rem] rounded-[1rem] text-white font-medium"
+          class="bg-quizler-blue-3/50 px-[5rem] py-[3rem] text-[2rem] rounded-[1rem] text-white font-medium border-b-[2px] border-green-300 cursor-pointer hover:translate-y-[-4px] transition-all duration-300 hover:opacity-80"
         >
-          <span>0</span>
-          <span>未學習</span>
+          <span class="mr-[2rem]">0</span>
+          <span>已精通</span>
         </div>
       </div>
     </div>
@@ -253,22 +279,36 @@ const controlModalOpen = ({ toggle }: ControlModal): void => {
         <h1 class="text-[4rem] text-white font-bold mb-[5rem]">
           學習中的詞語 <span>（{{ flashCardContents.length }}）</span>
         </h1>
-        <button
-          v-if="!isEdit"
-          class="text-[2rem] px-[2.5rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105 h-full"
-          type="button"
-          @click="(): boolean => (isEdit = true)"
-        >
-          編輯
-        </button>
-        <button
-          v-else
-          class="text-[2rem] px-[2.5rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105 h-full"
-          type="button"
-          @click="handleEdit"
-        >
-          完成
-        </button>
+        <div class="flex items-center gap-[2.5rem]">
+          <div
+            v-if="!isEdit"
+            class="text-white text-[1.8rem] border-b-[2.5px] border-quizler-blue-3 py-[1rem] px-[1.5rem] cursor-pointer hover:opacity-70 transition-all duration-300"
+          >
+            全部詞語
+          </div>
+          <div
+            v-if="!isEdit"
+            class="text-white/70 text-[1.8rem] px-[1.5rem] py-[1rem] cursor-pointer hover:opacity-70 transition-all duration-300"
+          >
+            星號詞語 (2)
+          </div>
+          <button
+            v-if="!isEdit"
+            class="text-[2rem] px-[2.5rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105 h-full"
+            type="button"
+            @click="(): boolean => (isEdit = true)"
+          >
+            編輯
+          </button>
+          <button
+            v-else
+            class="text-[2rem] px-[2.5rem] py-[1rem] bg-quizler-blue-1 text-white rounded-[1rem] transition-all duration-100 ease-linear hover:scale-105 h-full"
+            type="button"
+            @click="handleEdit"
+          >
+            完成
+          </button>
+        </div>
       </div>
 
       <div class="flex flex-col gap-[3rem]">

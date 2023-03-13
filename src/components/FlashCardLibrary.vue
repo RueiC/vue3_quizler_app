@@ -15,7 +15,7 @@ const onHovered: Ref<boolean> = ref(false);
 
 <template>
   <div
-    class="relative w-full h-[20rem] opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-200 ease-linear cursor-pointer"
+    class="relative w-full h-full opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-200 ease-linear cursor-pointer"
     @mouseenter="onHovered = true"
     @mouseleave="onHovered = false"
   >
@@ -23,14 +23,25 @@ const onHovered: Ref<boolean> = ref(false);
       :to="{ name: 'flash-card', params: { id: props.flashcardSet.id } }"
     >
       <div
-        class="flex flex-col gap-[0.5rem] items-start justify-start bg-quizler-blue-3 w-full h-full rounded-[1rem] p-[3.5rem]"
+        class="flex flex-col justify-between gap-[0.5rem] items-start bg-quizler-blue-3 w-full h-full rounded-[1rem] px-[3rem] py-[2.5rem]"
       >
-        <p class="text-[2.2rem] font-medium text-white">
-          {{ props.flashcardSet.title }}
-        </p>
-        <p class="text-[1.7rem] text-white/70">
-          {{ props.flashcardSet.flashcards.length }}個詞語
-        </p>
+        <div>
+          <p class="text-[2.2rem] font-medium text-white">
+            {{ props.flashcardSet.title }}
+          </p>
+          <p class="text-[1.7rem] text-white/70">
+            {{ props.flashcardSet.flashcards.length }}個詞語
+          </p>
+        </div>
+
+        <div class="flex items-center gap-[1rem] text-[1.6rem]">
+          <span class="px-[1.2rem] py-[0.6rem] bg-white/80 rounded-full"
+            >tag-1</span
+          >
+          <span class="px-[1.2rem] py-[0.6rem] bg-white/80 rounded-full"
+            >tag-2</span
+          >
+        </div>
       </div>
     </router-link>
 
