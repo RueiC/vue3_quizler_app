@@ -1,5 +1,7 @@
 # Vue 3｜Quizler - 通過單詞卡學習新語言
 
+** 目前持續的在開發新功能 **
+
 Website Demo - https://vue3-quizler-app.vercel.app
 
 <img width="700" alt="截圖 2023-02-19 23 02 10" src="https://user-images.githubusercontent.com/104335056/222036772-041fee82-6beb-4b1b-8122-6cfb015865c1.png">
